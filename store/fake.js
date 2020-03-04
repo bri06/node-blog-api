@@ -9,8 +9,13 @@ const get = async (tabla, id) => {
     const collection = await list(tabla);
     return collection.filter(elem => elem.id === id)[0] || null;
 };
-const upsert = async (tabla, data) => db[tabla].push(data);
-
+const upsert = async (tabla, data) => {
+    if(!db[tabla]) {
+        db[tabla] = []
+    }
+    db[tabla].push(data);
+    console.log(db)
+}
 const remove = async (tabla, id) => true;
 
 module.exports = {
