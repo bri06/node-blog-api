@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const auth = require('../../../auth');
 const TABLE = 'auth';
 module.exports = (injectedStore) => {
@@ -6,7 +7,7 @@ module.exports = (injectedStore) => {
         store = require('../../../store/fake');
     }
     return {
-        upsert: (data) => {
+        upsert: async (data) => {
             const authData = {
                 id: data.id,
             }
@@ -14,18 +15,18 @@ module.exports = (injectedStore) => {
                 authData.username = data.username;
             }
             if (data.password) {
-                authData.password = data.password;
+                authData.password = await bcrypt.hash(data.password, 6);
             }
             return store.upsert(TABLE, authData)
         },
         login: async (username, password) => {
             const data = await store.query(TABLE, { username, })
-            if (data.password === password) {
-                return auth.sign(data);
-            } else {
-                throw new Error('Invalid info');
-            }
-            return data;
+
+            return bcrypt.compare(password, data.password)
+                .then(equals => {
+                    if (equals) return auth.sign({ username: data.username });
+                    else throw new Error('Invalid info');
+                });
         },
     };
 };
