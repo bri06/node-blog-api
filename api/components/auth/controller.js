@@ -24,7 +24,7 @@ module.exports = (injectedStore) => {
 
             return bcrypt.compare(password, data.password)
                 .then(equals => {
-                    if (equals) return auth.sign({ username: data.username });
+                    if (equals) return auth.sign({ username: data.username, id: data.id });
                     else throw new Error('Invalid info');
                 });
         },
