@@ -7,6 +7,20 @@ const Controller = require('./index');
 const router = express.Router();
 
 // Routes
+/**
+ * success schema
+ * @typedef {object} SuccessSchema
+ * @property {boolean} error - error
+ * @property {number} status - status
+ * @property {string} body - list data
+ */
+
+/**
+* GET /api/list
+* @summary List endpoint
+* @return {SuccessSchema} 200 - success response - application/json
+* @return {object} 500 - Bad request response
+*/
 router.get('/', list);
 router.get('/:id', get);
 router.post('/', upsert);

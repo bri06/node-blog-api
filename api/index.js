@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const swaggerUI = require('swagger-ui-express');
+const expressJSDocSwagger = require('express-jsdoc-swagger');
 
 const config = require('../config.js');
 const user = require('./components/user/network');
@@ -12,12 +12,10 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const swaggerDoc = require('./swagger.json');
-
 // ROUTER
+expressJSDocSwagger(app)(config.api.swaggerOptions);
 app.use('/api/user', user)
 app.use('/api/auth', auth);
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 app.use(errors);
 
