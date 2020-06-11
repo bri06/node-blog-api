@@ -9,7 +9,7 @@ module.exports = {
                 name: 'MIT',
               },
             },
-            file: './**/network.js',
+            filesPattern: './**/network.js',
             baseDir: __dirname,
         },
     },
